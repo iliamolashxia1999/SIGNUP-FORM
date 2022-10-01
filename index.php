@@ -1,7 +1,7 @@
 <?php
 include 'sign-in.php';  
  $object = new SignIn(); 
- echo 'sd';
+ 
 ?>
 
 <!DOCTYPE html>
@@ -19,23 +19,13 @@ include 'sign-in.php';
 </head>
 <body>
 
-  <div class="container my-3" >
-   <h1 class="text-center">SIGNUP FORM</h1>
-       <!-- Button trigger modal -->
-<button type="button" class="btn btn-success m-5" data-bs-toggle="modal" data-bs-target="#completeModal">
-  sign up
-</button>
-
-
-    </div>
-
 <!-- add Modal -->
-<div class="modal fade" id="completeModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="completeModal" tabindex="1" aria-labelledby="exampleModalLabel" >
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">sign up</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
       </div>
       <div class="modal-body">
 
@@ -84,20 +74,58 @@ include 'sign-in.php';
     
  <script type="text/javascript">  
       
+      
+    $(window).on('load', function() {
+        $('#completeModal').modal('show');
+    });
+
 
      
         function adduser(){
            
-            
+            var reg = /^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i;
             var nameAdd=$('#completename').val();
             var surnameAdd=$('#completesurname').val();
             var emailAdd=$('#completemail').val();
             var action = "Insert";
 
 
+            if(nameAdd.trim() === '') {
+            $("#completename").addClass("is-invalid");
+            document.getElementsByName('name')[0].placeholder='name field is empty';
+            }if(surnameAdd.trim() === ''){
+            $("#completesurname").addClass("is-invalid");
+            document.getElementsByName('surname')[0].placeholder='surname field is empty';
+            } if(emailAdd.trim() === ''){
+            $("#completemail").addClass("is-invalid");
+            document.getElementsByName('email')[0].placeholder='email field is empty';
+            }
+            
+            if(nameAdd.trim() !== '') {
+                $("#completename").removeClass("is-invalid"); 
+                $("#completename").addClass("is-valid");
+            
+            }if(surnameAdd.trim() !== ''){
+                $("#completesurname").removeClass("is-invalid"); 
+                $("#completesurname").addClass("is-valid");
+            
+            } if(emailAdd.trim() !== '' && reg.test(emailAdd)){
+                $("#completemail").removeClass("is-invalid"); 
+                $("#completemail").addClass("is-valid");
+            
+            } 
+   
+   
+     if(emailAdd.trim() != '' && !reg.test(emailAdd)){
+        $("#completemail").addClass("is-invalid");
+        alert("not valid email adress");
+        $('#completemail').focus();
+    }
+
+        
     
     
-    if( nameAdd.trim() !== '' && surnameAdd.trim() !== '' && emailAdd.trim() !== '' ){
+    if( nameAdd.trim() !== '' && surnameAdd.trim() !== '' && emailAdd.trim() !== '' && reg.test(emailAdd) ){
 
             $.ajax({
                 url:"action.php",
